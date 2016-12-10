@@ -3,7 +3,7 @@ from collections import namedtuple
 
 from enum import Enum
 
-input = ['L5', 'R1', 'R3', 'L4', 'R3', 'R1', 'L3', 'L2', 'R3', 'L5', 'L1', 'L2', 'R5', 'L1', 'R5', 'R1', 'L4', 'R1', 'R3', 'L4', 'L1', 'R2', 'R5', 'R3', 'R1', 'R1', 'L1', 'R1', 'L1', 'L2', 'L1', 'R2', 'L5', 'L188', 'L4', 'R1', 'R4', 'L3', 'R47', 'R1', 'L1', 'R77', 'R5', 'L2', 'R1', 'L2', 'R4', 'L5', 'L1', 'R3', 'R187', 'L4', 'L3', 'L3', 'R2', 'L3', 'L5', 'L4', 'L4', 'R1', 'R5', 'L4', 'L3', 'L3', 'L3', 'L2', 'L5', 'R1', 'L2', 'R5', 'L3', 'L4', 'R4', 'L5', 'R3', 'R4', 'L2', 'L1', 'L4', 'R1', 'L3', 'R1', 'R3', 'L2', 'R1', 'R4', 'R5', 'L3', 'R5', 'R3', 'L3', 'R4', 'L2', 'L5', 'L1', 'L1', 'R3', 'R1', 'L4', 'R3', 'R3', 'L2', 'R5', 'R4', 'R1', 'R3', 'L4', 'R3', 'R3', 'L2', 'L4', 'L5', 'R1', 'L4', 'L5', 'R4', 'L2', 'L1', 'L3', 'L3', 'L5', 'R3', 'L4', 'L3', 'R5', 'R4', 'R2', 'L4', 'R2', 'R3', 'L3', 'R4', 'L1', 'L3', 'R2', 'R1', 'R5', 'L4', 'L5', 'L5', 'R4', 'L5', 'L2', 'L4', 'R4', 'R4', 'R1', 'L3', 'L2', 'L4', 'R3']
+paths = ['L5', 'R1', 'R3', 'L4', 'R3', 'R1', 'L3', 'L2', 'R3', 'L5', 'L1', 'L2', 'R5', 'L1', 'R5', 'R1', 'L4', 'R1', 'R3', 'L4', 'L1', 'R2', 'R5', 'R3', 'R1', 'R1', 'L1', 'R1', 'L1', 'L2', 'L1', 'R2', 'L5', 'L188', 'L4', 'R1', 'R4', 'L3', 'R47', 'R1', 'L1', 'R77', 'R5', 'L2', 'R1', 'L2', 'R4', 'L5', 'L1', 'R3', 'R187', 'L4', 'L3', 'L3', 'R2', 'L3', 'L5', 'L4', 'L4', 'R1', 'R5', 'L4', 'L3', 'L3', 'L3', 'L2', 'L5', 'R1', 'L2', 'R5', 'L3', 'L4', 'R4', 'L5', 'R3', 'R4', 'L2', 'L1', 'L4', 'R1', 'L3', 'R1', 'R3', 'L2', 'R1', 'R4', 'R5', 'L3', 'R5', 'R3', 'L3', 'R4', 'L2', 'L5', 'L1', 'L1', 'R3', 'R1', 'L4', 'R3', 'R3', 'L2', 'R5', 'R4', 'R1', 'R3', 'L4', 'R3', 'R3', 'L2', 'L4', 'L5', 'R1', 'L4', 'L5', 'R4', 'L2', 'L1', 'L3', 'L3', 'L5', 'R3', 'L4', 'L3', 'R5', 'R4', 'R2', 'L4', 'R2', 'R3', 'L3', 'R4', 'L1', 'L3', 'R2', 'R1', 'R5', 'L4', 'L5', 'L5', 'R4', 'L5', 'L2', 'L4', 'R4', 'R4', 'R1', 'L3', 'L2', 'L4', 'R3']
 
 Point = namedtuple('Point', ['x', 'y'])
 
@@ -74,3 +74,16 @@ class Position():
 		elif direction == 'R':
 			self.turn_right()
 		self.move_straight(length)
+
+
+pos = Position(0,0, Direction(1))
+
+for path in paths:
+    pos.move(path)
+
+print("The shortest distance is: {}".format(abs(pos.x) + abs(pos.y)))
+
+for i in range(len(pos.previous_positions)):
+	if pos.previous_positions[i] in pos.previous_positions[i + 1:]:
+		print("The shortest distance is: {}".format(abs(pos.previous_positions[i][0]) + abs(pos.previous_positions[i][1])))
+		break
