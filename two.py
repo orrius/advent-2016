@@ -28,11 +28,11 @@ class Keypadbutton(Enum):
 	def move(self, direction):
 		try:
 			if direction == 'U':
-				return Keypadbutton((self.value[0], self.value[1] + 1))
+				return Keypadbutton((self.value[0], self.value[1] - 1))
 			if direction == 'R':
 				return Keypadbutton((self.value[0] + 1, self.value[1]))
 			if direction == 'D':
-				return Keypadbutton((self.value[0], self.value[1] - 1))
+				return Keypadbutton((self.value[0], self.value[1] + 1))
 			if direction == 'L':
 				return Keypadbutton((self.value[0] - 1, self.value[1]))
 		except ValueError:
@@ -42,10 +42,13 @@ code = []
 
 current_button = Keypadbutton((2, 2))
 
-for command in instructions:
-	if command == '\n':
-		code.append(current_button.name)
-	else:
-		current_button = current_button.move(command)
+def read_input(commands=instructions, start_button=current_button):
+	for command in commands:
+		if command == '\n':
+			code.append(start_button.name)
+		else:
+			start_button = start_button.move(command)
+
+read_input()
 
 print('The code is {}'.format(''.join([number_mapping[number] for number in code])))
