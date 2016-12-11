@@ -12,9 +12,27 @@ number_mapping = {
 	'seven': '7',
 	'eight': '8',
 	'nine': '9',
+	'a': 'a',
+	'b': 'b',
+	'c': 'c',
+	'd': 'd',
 }
 
-class Keypadbutton(Enum):
+class KeypadButton(Enum):
+	def move(self, direction):
+		try:
+			if direction == 'U':
+				return self.__class__((self.value[0], self.value[1] - 1))
+			if direction == 'R':
+				return self.__class__((self.value[0] + 1, self.value[1]))
+			if direction == 'D':
+				return self.__class__((self.value[0], self.value[1] + 1))
+			if direction == 'L':
+				return self.__class__((self.value[0] - 1, self.value[1]))
+		except ValueError:
+			return self
+
+class StandardKeypadButton(KeypadButton):
 	one = (1, 1)
 	two = (2, 1)
 	three = (3, 1)
@@ -25,30 +43,32 @@ class Keypadbutton(Enum):
 	eight = (2, 3)
 	nine = (3, 3)
 
-	def move(self, direction):
-		try:
-			if direction == 'U':
-				return Keypadbutton((self.value[0], self.value[1] - 1))
-			if direction == 'R':
-				return Keypadbutton((self.value[0] + 1, self.value[1]))
-			if direction == 'D':
-				return Keypadbutton((self.value[0], self.value[1] + 1))
-			if direction == 'L':
-				return Keypadbutton((self.value[0] - 1, self.value[1]))
-		except ValueError:
-			return self
+class RealityKeypadButton(KeypadButton):
+	one = (3, 1)
+	two = (2, 2)
+	three = (3, 2)
+	four = (4, 2)
+	five = (1, 3)
+	six = (2, 3)
+	seven = (3, 3)
+	eight = (4, 3)
+	nine = (5, 3)
+	a = (2, 4)
+	b = (3, 4)
+	c = (4, 4)
+	d = (3, 5)
 
-code = []
+standard_button = StandardKeypadButton((2, 2))
+real_button = RealityKeypadButton((1, 3))
 
-current_button = Keypadbutton((2, 2))
-
-def read_input(commands=instructions, start_button=current_button):
+def calculate_code(commands, start_button):
+	code = []
 	for command in commands:
 		if command == '\n':
 			code.append(start_button.name)
 		else:
 			start_button = start_button.move(command)
+	print('The code is {}'.format(''.join([number_mapping[number] for number in code])))
 
-read_input()
-
-print('The code is {}'.format(''.join([number_mapping[number] for number in code])))
+calculate_code(instructions, standard_button)
+calculate_code(instructions, real_button)
